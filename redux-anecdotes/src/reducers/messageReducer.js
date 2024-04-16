@@ -4,7 +4,7 @@ const messageSlice = createSlice({
   name: 'message',
   initialState: 'initial message',
   reducers: {
-    filterChange (state, action) {
+    messageChange (state, action) {
       return action.payload
     }
   }
