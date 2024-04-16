@@ -30,7 +30,7 @@ const createMapper = (id) => {
   }
 }
 
-const filterSlice = createSlice({
+const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState,
   reducers: {
@@ -44,5 +44,5 @@ const filterSlice = createSlice({
 })
 
 
-export const { addVote, addAnecdote } = filterSlice.actions
-export default filterSlice.reducer
+export const { addVote, addAnecdote } = anecdoteSlice.actions
+export default anecdoteSlice.reducer
