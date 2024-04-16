@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
-
+import { messageChange, messageReset } from '../reducers/messageReducer'
 
 const sorter = (a,b) => {
   if(a.votes === b.votes)
@@ -14,11 +14,19 @@ const makeFilter = (filter) => {
 
 const AnecdoteForm = () => {
   const anecdotes = useSelector(({ anecdotes, filter }) => anecdotes.filter(makeFilter(filter)).sort(sorter))
+  const prevTimeoutId = useSelector(({ message }) => message.timeoutId)
 
   const dispatch = useDispatch()
 
-  const vote = (id) => {
-    dispatch(addVote(id))
+  const vote = (anecdote) => {
+    dispatch(addVote(anecdote.id))
+
+    if (prevTimeoutId !== -1)
+      clearTimeout(prevTimeoutId)
+    const timeoutId = setTimeout(() => {
+      dispatch(messageReset())
+    }, 5000)
+    dispatch(messageChange({ content: `You voted '${anecdote.content}'`, timeoutId }))
   }
 
   return (
@@ -30,7 +38,7 @@ const AnecdoteForm = () => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       )}
