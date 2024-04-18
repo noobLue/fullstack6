@@ -11,17 +11,7 @@ const AnecdoteForm = () => {
     const content = e.target.Anecdote.value
     e.target.Anecdote.value = ''
 
-    //const res = await anecdoteService.createNew(content)
     dispatch(createAnecdote(content))
-
-    /*
-    if (prevTimeoutId !== -1)
-      clearTimeout(prevTimeoutId)
-    const timeoutId = setTimeout(() => {
-      dispatch(messageReset())
-    }, 5000)
-    dispatch(messageChange({ content: `You added new anecdote '${content}'`, timeoutId }))
-    */
 
     dispatch(createMessage(`You added new anecdote '${content}'`, 5000))
   }
