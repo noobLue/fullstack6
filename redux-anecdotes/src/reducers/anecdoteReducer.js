@@ -1,21 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import anecdoteService from '../services/anecdoteService'
 
-const createMapper = (id) => {
-  return a => {
-    return a.id !== id ? a : {
-      ...a,
-      votes: a.votes + 1
-    }
-  }
-}
 
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState: [],
   reducers: {
     addVote (state, action) {
-      return state.map(createMapper(action.payload))
+      return state.map(a => a.id !== action.payload.id ? a : action.payload)
     },
     addAnecdote (state, action) {
       return state.concat(action.payload)
@@ -43,6 +35,15 @@ export const createAnecdote = (content) =>
     const anecdote = await anecdoteService.createNew(content)
 
     dispatch(addAnecdote(anecdote))
+  }
+}
+
+export const createVote = (anecdote) => {
+  return async dispatch => {
+    const newObj = { ...anecdote, votes: anecdote.votes + 1 }
+    const res = await anecdoteService.putNew(newObj)
+
+    dispatch(addVote(res))
   }
 }
 

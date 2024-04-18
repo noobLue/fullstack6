@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { addVote } from '../reducers/anecdoteReducer'
+import { createVote } from '../reducers/anecdoteReducer'
 import { messageChange, messageReset } from '../reducers/messageReducer'
 
 const sorter = (a,b) => {
@@ -19,7 +19,7 @@ const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
   const vote = (anecdote) => {
-    dispatch(addVote(anecdote.id))
+    dispatch(createVote(anecdote))
 
     if (prevTimeoutId !== -1)
       clearTimeout(prevTimeoutId)
