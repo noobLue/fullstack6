@@ -1,18 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { addAnecdote } from '../reducers/anecdoteReducer'
 import { messageChange, messageReset } from '../reducers/messageReducer'
+import anecdoteService from '../services/anecdoteService'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
   const prevTimeoutId = useSelector(({ message }) => message.timeoutId)
 
-  const submitAnecdote = (e) => {
+  const submitAnecdote = async (e) => {
     e.preventDefault()
 
     const content = e.target.Anecdote.value
     e.target.Anecdote.value = ''
 
-    dispatch(addAnecdote(content))
+    const res = await anecdoteService.createNew(content)
+    dispatch(addAnecdote(res))
 
     if (prevTimeoutId !== -1)
       clearTimeout(prevTimeoutId)
