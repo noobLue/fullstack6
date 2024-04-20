@@ -11,8 +11,9 @@ const App = () => {
 
   const likeMutation = useMutation({ 
     mutationFn: putAnecdote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['anecdotes']})
+    onSuccess: (newAnecdote) => {
+      const old = queryClient.getQueryData(['anecdotes'])
+      queryClient.setQueryData(['anecdotes'], old.map(a => a.id !== newAnecdote.id ? a : newAnecdote))
     }
    })
 
