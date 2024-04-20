@@ -1,7 +1,10 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useQuery } from '@tanstack/react-query'
-import { getAnecdotes } from './services/anecdoteRequests'
+import { getAnecdotes, createAnecdote } from './services/anecdoteRequests'
+
+
+
 
 const App = () => {
 
@@ -19,7 +22,7 @@ const App = () => {
 
   const anecdoteFunc = (data) => {
     return (<div>
-      {data.anecdotes.map(anecdote =>
+      {data.map(anecdote =>
       <div key={anecdote.id}>
         <div>
           {anecdote.content}

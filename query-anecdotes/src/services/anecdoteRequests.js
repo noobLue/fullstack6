@@ -1,5 +1,14 @@
 import axios from 'axios'
 
+//const url = 'http://localhost:3001/db/'
+const url = 'http://localhost:3001/anecdotes'
+
+
 export const getAnecdotes = () => {
-    return axios.get('http://localhost:3001/db').then(res => res.data)
+    return axios.get(url).then(res => res.data)
+}
+
+
+export const createAnecdote = (newAnecdote) => {
+  return axios.post(url, newAnecdote).then(res => res.data)
 }
