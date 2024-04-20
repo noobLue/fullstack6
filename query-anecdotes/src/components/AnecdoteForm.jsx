@@ -1,14 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createAnecdote } from "../services/anecdoteRequests"
+import { useContext } from "react"
+import MessageContext from "../MessageContext"
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
+  const [message, messageDispatch] = useContext(MessageContext)
 
   const anecdoteMutation = useMutation({ 
     mutationFn: createAnecdote,
     onSuccess: (newAnecdote) => {
       const old = queryClient.getQueryData(['anecdotes'])
       queryClient.setQueryData(['anecdotes'], old.concat(newAnecdote))
+
+      const timeoutId = setTimeout(() => messageDispatch({type: 'RESET'}), 5000)
+      messageDispatch({type: 'SET', payload: {message: `You added a new anecdote '${newAnecdote.content}!'`, timeoutId}})
     }
    })
 

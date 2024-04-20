@@ -2,18 +2,24 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getAnecdotes, putAnecdote } from './services/anecdoteRequests'
-
+import { useContext, useReducer } from 'react'
+import MessageContext from './MessageContext'
 
 
 
 const App = () => {
   const queryClient = useQueryClient()
+  const [message, messageDispatch] = useContext(MessageContext)
+  
 
   const likeMutation = useMutation({ 
     mutationFn: putAnecdote,
     onSuccess: (newAnecdote) => {
       const old = queryClient.getQueryData(['anecdotes'])
       queryClient.setQueryData(['anecdotes'], old.map(a => a.id !== newAnecdote.id ? a : newAnecdote))
+
+      const timeoutId = setTimeout(() => messageDispatch({type: 'RESET'}), 5000)
+      messageDispatch({type: 'SET', payload: {message: `You added a vote to '${newAnecdote.content}!'`, timeoutId}})
     }
    })
 
@@ -66,11 +72,11 @@ const App = () => {
   return (
     <div>
       <h3>Anecdote app</h3>
-    
-      <Notification />
-      <AnecdoteForm />
-    
-      { statePicker() }
+
+        <Notification />
+        <AnecdoteForm />
+      
+        { statePicker() }
     </div>
   )
 }
