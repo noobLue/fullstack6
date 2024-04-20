@@ -15,6 +15,17 @@ const AnecdoteForm = () => {
 
       const timeoutId = setTimeout(() => messageDispatch({type: 'RESET'}), 5000)
       messageDispatch({type: 'SET', payload: {message: `You added a new anecdote '${newAnecdote.content}!'`, timeoutId}})
+    },
+    onError: (error) => {
+      if(error.code === 'ERR_BAD_REQUEST')
+      {
+        const timeoutId = setTimeout(() => messageDispatch({type: 'RESET'}), 5000)
+        messageDispatch({type: 'SET', payload: {message: `Failed to add anecdote, it was shorter than 5 characters`, timeoutId}})
+      }
+      else 
+      {
+        // Unknown error
+      }
     }
    })
 
